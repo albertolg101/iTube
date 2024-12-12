@@ -67,4 +67,10 @@ export const GlobalStyle = createGlobalStyle`
         background-color: ${({ theme }) => theme.palette.background.body};
         margin: 0;
     }
+    
+    #root {
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+    }
 `;
