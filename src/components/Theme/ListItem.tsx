@@ -1,5 +1,5 @@
 import styled from "styled-components";
 
 export const ListItem = styled.li`
-    list-style-type: none;
-`
+  list-style-type: none;
+`;

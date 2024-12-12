@@ -8,6 +8,7 @@ export interface BoxProps {
   $margin?: string;
   $overflow?: "scroll" | "hidden" | "auto";
   $transform?: string;
+  $fontSize?: string;
 }
 
 export const Box = styled.div<BoxProps>`
@@ -18,5 +19,6 @@ export const Box = styled.div<BoxProps>`
   ${({ $margin }) => $margin && `margin: ${$margin}`};
   ${({ $overflow }) => $overflow && `overflow: ${$overflow}`};
   ${({ $transform }) => $transform && `transform: ${$transform}`};
+  ${({ $fontSize }) => $fontSize && `font-size: ${$fontSize}`};
   box-sizing: border-box;
 `;
