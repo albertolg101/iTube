@@ -17,12 +17,12 @@ const Container = styled.div`
 export interface OverlayProps {
   children: React.ReactNode;
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export function Overlay({ children, isOpen, onClose }: OverlayProps) {
   function handleClick(event: React.MouseEvent<HTMLDivElement>) {
-    if (event.target === event.currentTarget) {
+    if (event.target === event.currentTarget && onClose !== undefined) {
       event.stopPropagation();
       onClose();
     }
