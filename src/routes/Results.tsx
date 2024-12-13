@@ -5,9 +5,13 @@ import { SearchBar } from "@/components/SearchBar";
 import { VideosList } from "@/components/VideosList";
 
 export function Results() {
-  const [searchParams] = useSearchParams({ q: "" });
+  const [searchParams, setSearchParams] = useSearchParams({ q: "" });
   const query = searchParams.get("q") || "";
   const { data } = useSearch(query);
+
+  function handleSearch(query: string) {
+    setSearchParams({ q: query });
+  }
 
   return (
     <FlexBox
@@ -17,7 +21,7 @@ export function Results() {
       $fontSize="1rem"
       $padding="1rem 0"
     >
-      <SearchBar />
+      <SearchBar onSearch={handleSearch} />
       {data !== undefined && <VideosList videos={data} />}
     </FlexBox>
   );
