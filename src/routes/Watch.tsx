@@ -2,26 +2,43 @@ import { useSearchParams } from "react-router";
 import "@rmwc/circular-progress/styles";
 import { CircularProgress } from "@rmwc/circular-progress";
 import { FlexBox } from "@/components/Theme";
-import { useVideoDetails } from "@/libs/youtube.ts";
+import { useVideoDetails, useSearch } from "@/libs/youtube.ts";
 import { YouTubePlayer } from "@/components/YouTubePlayer";
 import { ErrorPage } from "@/components/ErrorPage";
+import { SearchBar } from "@/components/SearchBar";
+import { VideosList } from "@/components/VideosList";
 
 export function Watch() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const videoId = searchParams.get("v");
+  const query = searchParams.get("q") || "";
 
-  const { data, isLoading, error } = useVideoDetails(videoId || "404");
+  const video = useVideoDetails(videoId || "404");
+  const search = useSearch(query);
 
-  return error ? (
+  return video.error ? (
     <ErrorPage errorCode={500} />
-  ) : data !== undefined && "status" in data ? (
+  ) : video.data !== undefined && "status" in video.data ? (
     <ErrorPage errorCode={404} />
-  ) : isLoading ? (
+  ) : video.isLoading ? (
     <FlexBox $centered $flexGrow>
       <CircularProgress size="xlarge" />
     </FlexBox>
   ) : (
-    videoId && data && <YouTubePlayer videoId={videoId} />
+    videoId &&
+    video.data && (
+      <FlexBox>
+        <YouTubePlayer videoId={videoId} />
+        <FlexBox $direction="column">
+          <SearchBar
+            onSearch={(query) => setSearchParams({ v: videoId, q: query })}
+          />
+          {query !== "" &&
+            search !== undefined &&
+            search.data !== undefined && <VideosList videos={search.data} />}
+        </FlexBox>
+      </FlexBox>
+    )
   );
 }
