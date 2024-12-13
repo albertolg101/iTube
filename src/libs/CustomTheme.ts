@@ -36,21 +36,17 @@ export const CustomTheme = {
       bold: 600,
     },
   },
-  button: {
-    contained: {
-      color: "#FFFFFF",
-      background: "#2EC4B6",
-      hoverColor: "#FFFFFF",
-      hoverBackground: "#2AAFA6",
-    },
-    outlined: {
-      color: "#2EC4B6",
-      background: "#FFFFFF",
-      hoverColor: "#2AAFA6",
-      hoverBackground: "#ECFAF8",
-    },
-  },
   palette: {
+    primary: {
+      light: "#00ce64",
+      main: "#00b85a",
+      dark: "#00a651",
+    },
+    secondary: {
+      light: "#e0b0ff",
+      main: "#cc99ff",
+      dark: "#cc66ff",
+    },
     text: {
       primary: "#171717",
     },

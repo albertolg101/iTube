@@ -7,36 +7,43 @@ export interface ButtonProps {
 }
 
 export const Button = styled.button<ButtonProps>`
-    font-family: ${({ theme }) => theme.font.family};
-    font-size: ${({ theme }) => theme.font.sizes.button};
+  font-family: ${({ theme }) => theme.font.family};
+  font-size: ${({ theme }) => theme.font.sizes.button};
+  color: ${({ $variant, theme }) =>
+    $variant === "contained"
+      ? theme.palette.text.primary
+      : theme.palette.primary.main};
+  background-color: ${({ $variant, theme }) =>
+    $variant === "contained"
+      ? theme.palette.primary.main
+      : theme.palette.background.primary};
+  border: 2px solid ${({ theme }) => theme.palette.primary.main};
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
     color: ${({ $variant, theme }) =>
       $variant === "contained"
-        ? theme.button.contained.color
-        : theme.button.outlined.color};
+        ? theme.palette.text.primary
+        : theme.palette.primary.light};
     background-color: ${({ $variant, theme }) =>
       $variant === "contained"
-        ? theme.button.contained.background
-        : theme.button.outlined.background};
-    border: 2px solid ${({ $variant, theme }) =>
-      $variant === "contained"
-        ? theme.button.contained.background
-        : theme.button.outlined.color};
-    padding: 0.2rem 0.6rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: all 0.2s;
+        ? theme.palette.primary.light
+        : theme.palette.background.primary};
+    border-color: ${({ theme }) => theme.palette.primary.light};
+  }
 
-    &:hover, &:active {
-        color: ${({ $variant, theme }) =>
-          $variant === "contained"
-            ? theme.button.contained.hoverColor
-            : theme.button.outlined.hoverColor};
-        background-color: ${({ $variant, theme }) =>
-          $variant === "contained"
-            ? theme.button.contained.hoverBackground
-            : theme.button.outlined.hoverBackground};
-        border-color: ${({ $variant, theme }) =>
-          $variant === "contained"
-            ? theme.button.contained.hoverBackground
-            : theme.button.outlined.hoverColor}
+  &:active {
+    color: ${({ $variant, theme }) =>
+      $variant === "contained"
+        ? theme.palette.text.primary
+        : theme.palette.primary.dark};
+    background-color: ${({ $variant, theme }) =>
+      $variant === "contained"
+        ? theme.palette.primary.dark
+        : theme.palette.background.primary};
+    border-color: ${({ theme }) => theme.palette.primary.dark};
+  }
 `;

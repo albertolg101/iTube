@@ -11,13 +11,17 @@ export function Home() {
   }
 
   return (
-    <FlexBox $direction="column" $centered $flexGrow>
-      <Box $position="relative">
-        <Box $position="absolute" $transform="translateY(-100%)">
-          <Logo />
-        </Box>
-        <SearchBar onSearch={handleSearch} />
+    <FlexBox
+      $position="relative"
+      $direction="column"
+      $centered
+      $flexGrow
+      $fontSize="4rem"
+    >
+      <Box $position="absolute" $transform="translateY(-80%)">
+        <Logo variant="horizontal" />
       </Box>
+      <SearchBar onSearch={handleSearch} />
     </FlexBox>
   );
 }
