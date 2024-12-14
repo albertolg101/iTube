@@ -8,7 +8,7 @@ export function Results() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams({ q: "" });
   const query = searchParams.get("q") || "";
-  const { data } = useSearch(query);
+  const { data, isLoading } = useSearch(query);
 
   function handleSearch(query: string) {
     setSearchParams({ q: query });
@@ -26,7 +26,13 @@ export function Results() {
       $fontSize="2rem"
       $padding="1rem"
     >
-      <Header searchParams={{ onSearch: handleSearch, defaultValue: query }} />
+      <Header
+        searchParams={{
+          onSearch: handleSearch,
+          defaultValue: query,
+          isLoading: isLoading,
+        }}
+      />
       {data !== undefined && (
         <VideosList videos={data} onVideoClick={handleVideoClick} />
       )}

@@ -8,6 +8,7 @@ export interface HeaderProps {
   searchParams: {
     onSearch: SearchBarProps["onSearch"];
     defaultValue: SearchBarProps["defaultValue"];
+    isLoading: SearchBarProps["isLoading"];
   };
 }
 

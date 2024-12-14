@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Search from "@/assets/search.svg";
 import { useForm } from "react-hook-form";
 import { Button, FlexBox } from "@/components/Theme";
+import { CircularProgress } from "@rmwc/circular-progress";
 
 type InputProps = { $wide?: boolean };
 
@@ -35,9 +36,15 @@ const Icon = styled.img`
 export interface SearchBarProps {
   onSearch(query: string): void;
   defaultValue?: string;
+  isLoading?: boolean;
   wide?: boolean;
 }
-export function SearchBar({ onSearch, defaultValue, wide }: SearchBarProps) {
+export function SearchBar({
+  onSearch,
+  defaultValue,
+  wide,
+  isLoading,
+}: SearchBarProps) {
   const { register, handleSubmit } = useForm();
 
   return (
@@ -51,7 +58,11 @@ export function SearchBar({ onSearch, defaultValue, wide }: SearchBarProps) {
           {...register("search", { required: true })}
         />
         <SubmitButton type="submit" $variant="contained">
-          <Icon src={Search} alt="Search" />
+          {isLoading ? (
+            <CircularProgress size="small" color="red" />
+          ) : (
+            <Icon src={Search} alt="Search" />
+          )}
         </SubmitButton>
       </FlexBox>
     </form>
