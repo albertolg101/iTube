@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 export interface BoxProps {
   $position?: "absolute" | "relative";
@@ -17,9 +18,10 @@ export interface BoxProps {
   $fontSize?: string;
   $borderRadius?: string;
   $background?: string;
+  $backgroundSize?: string;
 }
 
-export const Box = styled.div<BoxProps>`
+export const Box = styled(motion.div)<BoxProps>`
   ${({ $position }) => $position && `position: ${$position}`};
   ${({ $top }) => $top && `top: ${$top}`};
   ${({ $left }) => $left && `left: ${$left}`};
@@ -36,6 +38,8 @@ export const Box = styled.div<BoxProps>`
   ${({ $transform }) => $transform && `transform: ${$transform}`};
   ${({ $fontSize }) => $fontSize && `font-size: ${$fontSize}`};
   ${({ $background }) => $background && `background: ${$background}`};
+  ${({ $backgroundSize }) =>
+    $backgroundSize && `background-size: ${$backgroundSize}`};
   ${({ $borderRadius }) => $borderRadius && `border-radius: ${$borderRadius}`};
   box-sizing: border-box;
 `;
