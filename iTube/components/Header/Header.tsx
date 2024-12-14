@@ -19,7 +19,7 @@ export function Header({ searchParams }: HeaderProps) {
       $gridTemplateColumns="1fr auto 1fr"
       $alignItems="center"
     >
-      <Link to="/itube/">
+      <Link to="/">
         <Logo variant="horizontal" />
       </Link>
       <SearchBar {...searchParams} wide />
