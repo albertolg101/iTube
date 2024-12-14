@@ -18,6 +18,7 @@ export interface TypographyProps {
   as?: TypographyVariant;
   $color?: string;
   $size?: TypographyVariant;
+  $textAlign?: "left" | "center" | "right" | "start" | "end";
   $weight?: FontWeight;
   $italic?: boolean;
   $underline?: boolean;
@@ -30,12 +31,13 @@ export const Typography = styled.p<TypographyProps>`
   font-family: ${({ theme }) => theme.font.family};
   color: ${({ theme, $color }) => $color || theme.palette.text.primary};
   font-size: ${({ theme, $size, as }) => theme.font.sizes[$size || as || "p"]};
+  text-align: ${({ $textAlign }) => $textAlign || "left"};
   font-weight: ${({ theme, $weight }) =>
     theme.font.weights[$weight || "regular"]};
   font-style: ${({ $italic }) => ($italic ? "italic" : "normal")};
   text-decoration: ${({ $underline }) => ($underline ? "underline" : "none")};
   cursor: ${({ $underlinedOnHover }) =>
-    $underlinedOnHover ? "pointer" : "default"};
+    $underlinedOnHover ? "pointer" : "inherit"};
   margin: ${({ $margin, theme, $size, as }) =>
     $margin || theme.font.margin[$size || as || "p"]};
 

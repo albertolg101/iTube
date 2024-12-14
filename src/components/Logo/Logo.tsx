@@ -1,7 +1,8 @@
+import { Link } from "react-router";
 import iTubeLogoMark from "@/assets/itube-logo-mark.svg";
 import iTubeLogoVertical from "@/assets/itube-logo-vertical.svg";
 import iTubeLogoHorizontal from "@/assets/itube-logo-horizontal.svg";
-import { Box } from "@/components/Theme";
+import { Box, IconButton } from "@/components/Theme";
 
 interface LogoProps {
   variant: "mark" | "horizontal" | "vertical";
@@ -32,7 +33,11 @@ export function Logo({ variant }: LogoProps) {
       $width={`calc(${logo.width}em / 40)`}
       $height={`calc(${logo.height}em / 40)`}
     >
-      <img src={logo.src} alt="Logo" />
+      <IconButton>
+        <Link to="/">
+          <img src={logo.src} alt="Logo" />
+        </Link>
+      </IconButton>
     </Box>
   );
 }

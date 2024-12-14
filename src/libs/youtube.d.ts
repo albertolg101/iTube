@@ -1,6 +1,6 @@
 export type ErrorResponse = {
   status: false;
-}
+};
 
 export type VideosListItem = {
   id: {
@@ -30,16 +30,16 @@ export type VideosListItem = {
 export type VideosList = VideoListItem[];
 
 export type VideoDetails = {
-  url: string,
-  title: string,
-  description: string,
-  owner: string,
-  thumbnailUrl: string,
-  datePublished: string,
-  genre: string,
-  isFamilyFriendly: boolean,
-  duration: number,
-  views: number,
-  likeCount: number,
-  dislikeCount: number,
-}
+  url: string;
+  title: string;
+  description: string;
+  owner: string;
+  thumbnailUrl: string;
+  datePublished: string;
+  genre: string;
+  isFamilyFriendly: boolean;
+  duration: number;
+  views: number;
+  likeCount: number;
+  dislikeCount: number;
+};

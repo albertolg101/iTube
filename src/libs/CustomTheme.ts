@@ -21,11 +21,11 @@ export const CustomTheme = {
       h2: "0.8em 0",
       h3: "0.7em 0",
       h4: "0.5em 0",
-      h5: "0.4em 0",
+      h5: "0.1em 0",
       h6: "0.3em 0",
       button: "0.2em 0.6em",
       p: "0.3em 0",
-      subtitle1: "0.2em 0",
+      subtitle1: "0.1em 0",
       subtitle2: "0.1em 0",
       span: "0",
     },
@@ -49,6 +49,7 @@ export const CustomTheme = {
     },
     text: {
       primary: "#171717",
+      secondary: "#333333",
     },
     background: {
       body: "#F5F5F5",

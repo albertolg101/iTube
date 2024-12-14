@@ -1,5 +1,10 @@
 import styled from "styled-components";
+import { Box, BoxProps } from "@/components/Theme/Box.tsx";
 
-export const ListItem = styled.li`
-  list-style-type: none;
+export interface ListItemProps extends BoxProps {
+  $listStyleType?: "disc" | "circle" | "none";
+}
+export const ListItem = styled(Box).attrs({ as: "li" })<ListItemProps>`
+  list-style-type: ${({ $listStyleType }) =>
+    $listStyleType ? $listStyleType : "none"};
 `;

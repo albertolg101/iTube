@@ -1,32 +1,29 @@
 import type * as youtube from "@/libs/youtube.d";
-import styled from "styled-components";
-import { Typography } from "@/components/Theme";
-import { Link } from "react-router";
+import { VideosListItem } from "@/components/VideosListItem";
+import { List } from "@/components/Theme";
 
 type VideosListVariant = "normal" | "mini";
-type ULProps = { $variant: VideosListVariant };
-
-const UL = styled.ul<ULProps>`
-  font-size: ${({ $variant }) => ($variant === "normal" ? "1rem" : "0.75rem")};
-`;
 
 export interface VideosListProps {
   videos: youtube.VideosList;
+  onVideoClick(videoId: string): void;
   variant?: VideosListVariant;
 }
 
-export function VideosList({ videos, variant = "normal" }: VideosListProps) {
+export function VideosList({
+  videos,
+  onVideoClick,
+  variant = "normal",
+}: VideosListProps) {
   return (
-    <UL $variant={variant}>
+    <List $fontSize="1rem">
       {videos.map((video) => (
-        <li>
-          <Link to={`/watch?v=${video.id.videoId}`}>
-            <Typography as="a" $size="h5" $weight="medium">
-              {video.title}
-            </Typography>
-          </Link>
-        </li>
+        <VideosListItem
+          key={video.id.videoId}
+          video={video}
+          onClick={() => onVideoClick(video.id.videoId)}
+        />
       ))}
-    </UL>
+    </List>
   );
 }

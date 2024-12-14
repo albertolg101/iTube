@@ -3,8 +3,11 @@ import Search from "@/assets/search.svg";
 import { useForm } from "react-hook-form";
 import { Button, FlexBox } from "@/components/Theme";
 
-const Input = styled.input`
+type InputProps = { $wide?: boolean };
+
+const Input = styled.input<InputProps>`
   font-size: 1em;
+  width: ${({ $wide }) => ($wide ? "20em" : "11em")};
   padding: 0.2em 0.6em;
   border-radius: 1em 0 0 1em;
   border: 2px solid ${({ theme }) => theme.palette.primary.main};
@@ -31,8 +34,10 @@ const Icon = styled.img`
 
 export interface SearchBarProps {
   onSearch(query: string): void;
+  defaultValue?: string;
+  wide?: boolean;
 }
-export function SearchBar({ onSearch }: SearchBarProps) {
+export function SearchBar({ onSearch, defaultValue, wide }: SearchBarProps) {
   const { register, handleSubmit } = useForm();
 
   return (
@@ -41,6 +46,8 @@ export function SearchBar({ onSearch }: SearchBarProps) {
         <Input
           type="text"
           placeholder="Search..."
+          defaultValue={defaultValue}
+          $wide={wide}
           {...register("search", { required: true })}
         />
         <SubmitButton type="submit" $variant="contained">
