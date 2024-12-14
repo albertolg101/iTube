@@ -15,7 +15,7 @@ export function Results() {
   }
 
   function handleVideoClick(videoId: string) {
-    navigate(`/watch?v=${videoId}&q=${query}`);
+    navigate(`/itube/watch?v=${videoId}&q=${query}`);
   }
 
   return (

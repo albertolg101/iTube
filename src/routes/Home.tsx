@@ -7,7 +7,7 @@ export function Home() {
   const navigate = useNavigate();
 
   function handleSearch(query: string) {
-    navigate(`/results?q=${query}`);
+    navigate(`/itube/results?q=${query}`);
   }
 
   return (

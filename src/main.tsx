@@ -9,7 +9,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />}>
+        <Route path="/itube/" element={<App />}>
           <Route index element={<Home />} />
           <Route path="results" element={<Results />} />
           <Route path="watch" element={<Watch />} />
