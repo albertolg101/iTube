@@ -1,4 +1,3 @@
-import { Link } from "react-router";
 import iTubeLogoMark from "@/assets/itube-logo-mark.svg";
 import iTubeLogoVertical from "@/assets/itube-logo-vertical.svg";
 import iTubeLogoHorizontal from "@/assets/itube-logo-horizontal.svg";
@@ -34,9 +33,7 @@ export function Logo({ variant }: LogoProps) {
       $height={`calc(${logo.height}em / 40)`}
     >
       <IconButton>
-        <Link to="/">
-          <img src={logo.src} alt="Logo" />
-        </Link>
+        <img src={logo.src} alt="Logo" />
       </IconButton>
     </Box>
   );
