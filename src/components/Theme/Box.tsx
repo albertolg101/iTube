@@ -10,11 +10,13 @@ export interface BoxProps {
   $height?: string;
   $padding?: string;
   $margin?: string;
+  $flexGrow?: boolean;
   $overflow?: "scroll" | "hidden" | "auto";
+  $scrollbarWidth?: "auto" | "thin" | "none";
   $transform?: string;
   $fontSize?: string;
   $borderRadius?: string;
-  $backgroundColor?: string;
+  $background?: string;
 }
 
 export const Box = styled.div<BoxProps>`
@@ -27,11 +29,13 @@ export const Box = styled.div<BoxProps>`
   ${({ $height }) => $height && `height: ${$height}`};
   ${({ $padding }) => $padding && `padding: ${$padding}`};
   ${({ $margin }) => $margin && `margin: ${$margin}`};
+  ${({ $flexGrow }) => $flexGrow && "flex-grow: 1"};
   ${({ $overflow }) => $overflow && `overflow: ${$overflow}`};
+  ${({ $scrollbarWidth }) =>
+    $scrollbarWidth && `scrollbar-width: ${$scrollbarWidth}`};
   ${({ $transform }) => $transform && `transform: ${$transform}`};
   ${({ $fontSize }) => $fontSize && `font-size: ${$fontSize}`};
-  ${({ $backgroundColor }) =>
-    $backgroundColor && `background-color: ${$backgroundColor}`};
+  ${({ $background }) => $background && `background: ${$background}`};
   ${({ $borderRadius }) => $borderRadius && `border-radius: ${$borderRadius}`};
   box-sizing: border-box;
 `;

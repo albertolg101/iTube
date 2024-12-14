@@ -1,12 +1,18 @@
 import { useSearchParams } from "react-router";
 import "@rmwc/circular-progress/styles";
 import { CircularProgress } from "@rmwc/circular-progress";
-import { FlexBox } from "@/components/Theme";
-import { useVideoDetails, useSearch } from "@/libs/youtube.ts";
+import { Box, FlexBox, Grid, Typography } from "@/components/Theme";
+import {
+  useVideoDetails,
+  useSearch,
+  numberToShortFormat,
+  toTimeAgoString,
+} from "@/libs/youtube.ts";
 import { YouTubePlayer } from "@/components/YouTubePlayer";
 import { ErrorPage } from "@/components/ErrorPage";
-import { SearchBar } from "@/components/SearchBar";
 import { VideosList } from "@/components/VideosList";
+import { Header } from "@/components/Header";
+import { CustomTheme } from "@/libs/CustomTheme.ts";
 
 export function Watch() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -28,16 +34,70 @@ export function Watch() {
   ) : (
     videoId &&
     video.data && (
-      <FlexBox>
-        <YouTubePlayer videoId={videoId} />
-        <FlexBox $direction="column">
-          <SearchBar
-            onSearch={(query) => setSearchParams({ v: videoId, q: query })}
-          />
-          {query !== "" &&
-            search !== undefined &&
-            search.data !== undefined && <VideosList videos={search.data} />}
-        </FlexBox>
+      <FlexBox
+        $direction="column"
+        $width="100%"
+        $fontSize="2rem"
+        $padding="1rem 1rem 0 1rem"
+        $height="100vh"
+        $overflow="scroll"
+      >
+        <Header
+          searchParams={{
+            onSearch: (query) => setSearchParams({ v: videoId, q: query }),
+            defaultValue: query,
+          }}
+        />
+        <Grid
+          $flexGrow
+          $gridTemplateColumns="minmax(0, 1fr) auto"
+          $margin="10px 30px 0 20px"
+          $overflow="scroll"
+          $scrollbarWidth="none"
+        >
+          <Box $padding="0 20px 10px 60px" $fontSize="1rem">
+            <YouTubePlayer videoId={videoId} />
+            <Typography as="h1" $size="h4" $weight="bold" $margin="1rem 0 0 0">
+              {video.data.title}
+            </Typography>
+            <Typography as="h2" $size="h6" $weight="medium">
+              {video.data.owner}
+            </Typography>
+            <Box
+              $margin="10px 0 10px 10px"
+              $padding="1px 20px"
+              // $background={`linear-gradient(45deg, ${CustomTheme.palette.primary.light} 0%, ${CustomTheme.palette.primary.dark} 100%)`}
+              $background={CustomTheme.palette.primary.main}
+              $borderRadius="12px"
+            >
+              <Typography as="p"></Typography>
+              <Typography as="p" $margin="1rem 0" $weight="medium">
+                <Typography as="span" $size="subtitle1" $weight="bold">
+                  {`${numberToShortFormat(video.data.views)} views`}
+                  {" • "}
+                  {toTimeAgoString(video.data.datePublished)}
+                  <br />
+                  {video.data.genre}
+                </Typography>
+                <br />
+                {video.data.description}
+              </Typography>
+            </Box>
+          </Box>
+          <FlexBox $direction="column" $overflow="scroll">
+            {query !== "" &&
+              search !== undefined &&
+              search.data !== undefined && (
+                <VideosList
+                  videos={search.data}
+                  onVideoClick={(videoId) => {
+                    setSearchParams({ v: videoId, q: query });
+                  }}
+                  size="sm"
+                />
+              )}
+          </FlexBox>
+        </Grid>
       </FlexBox>
     )
   );

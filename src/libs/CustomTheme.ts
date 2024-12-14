@@ -54,6 +54,7 @@ export const CustomTheme = {
     background: {
       body: "#F5F5F5",
       primary: "#FFFFFF",
+      secondary: "#E0E0E0",
     },
   },
 };
