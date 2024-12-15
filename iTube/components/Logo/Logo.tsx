@@ -15,13 +15,13 @@ const LOGO = {
   },
   vertical: {
     src: iTubeLogoVertical,
-    width: 106,
+    width: 115,
     height: 150,
   },
   horizontal: {
     src: iTubeLogoHorizontal,
     width: 300,
-    height: 111,
+    height: 95,
   },
 };
 

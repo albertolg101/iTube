@@ -18,7 +18,7 @@ export function Home() {
       $flexGrow
       $fontSize="4rem"
     >
-      <Box $position="absolute" $transform="translateY(-80%)">
+      <Box $position="absolute" $transform="translateY(-100%)">
         <Logo variant="horizontal" />
       </Box>
       <SearchBar onSearch={handleSearch} />
