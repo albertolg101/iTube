@@ -23,6 +23,7 @@ export interface TypographyProps {
   $italic?: boolean;
   $underline?: boolean;
   $margin?: string;
+  $maxLines?: number;
   $hoverColor?: string;
   $underlinedOnHover?: boolean;
 }
@@ -40,6 +41,12 @@ export const Typography = styled.p<TypographyProps>`
     $underlinedOnHover ? "pointer" : "inherit"};
   margin: ${({ $margin, theme, $size, as }) =>
     $margin || theme.font.margin[$size || as || "p"]};
+  ${({ $maxLines }) =>
+    $maxLines &&
+    `display: -webkit-box;` +
+      `-webkit-line-clamp: ${$maxLines};` +
+      `-webkit-box-orient: vertical;` +
+      `overflow: hidden;`};
 
   &:hover {
     color: ${({ $hoverColor, $color }) => $hoverColor || $color};

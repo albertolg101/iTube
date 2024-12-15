@@ -25,7 +25,7 @@ export function VideosListItem({ video, toUrl, size }: VideosListItemProps) {
             $width={size === "md" ? "30em" : "15em"}
             $alignItems="start"
           >
-            <Typography as="h5" $weight="medium">
+            <Typography as="h5" $weight="medium" $maxLines={3}>
               {video.title}
             </Typography>
             <Typography
