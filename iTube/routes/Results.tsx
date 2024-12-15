@@ -1,11 +1,10 @@
-import { useSearchParams, useNavigate } from "react-router";
+import { useSearchParams } from "react-router";
 import { useSearch } from "@/libs/youtube.ts";
 import { FlexBox } from "@/components/Theme";
 import { VideosList } from "@/components/VideosList";
 import { Header } from "@/components/Header";
 
 export function Results() {
-  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams({ q: "" });
   const query = searchParams.get("q") || "";
   const { data, isLoading } = useSearch(query);
@@ -14,8 +13,8 @@ export function Results() {
     setSearchParams({ q: query });
   }
 
-  function handleVideoClick(videoId: string) {
-    navigate(`/watch?v=${videoId}&q=${query}`);
+  function getVideoUrl(videoId: string) {
+    return `/watch?v=${videoId}&q=${query}`;
   }
 
   return (
@@ -35,7 +34,7 @@ export function Results() {
         }}
       />
       {data !== undefined && (
-        <VideosList videos={data} onVideoClick={handleVideoClick} />
+        <VideosList videos={data} getVideoUrl={getVideoUrl} />
       )}
     </FlexBox>
   );

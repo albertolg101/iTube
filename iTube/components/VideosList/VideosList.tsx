@@ -6,13 +6,13 @@ export type VideosListSize = "md" | "sm";
 
 export interface VideosListProps {
   videos: youtube.VideosList;
-  onVideoClick(videoId: string): void;
+  getVideoUrl(videoId: string): string;
   size?: VideosListSize;
 }
 
 export function VideosList({
   videos,
-  onVideoClick,
+  getVideoUrl,
   size = "md",
 }: VideosListProps) {
   return (
@@ -21,7 +21,7 @@ export function VideosList({
         <VideosListItem
           key={video.id.videoId}
           video={video}
-          onClick={() => onVideoClick(video.id.videoId)}
+          toUrl={getVideoUrl(video.id.videoId)}
           size={size}
         />
       ))}

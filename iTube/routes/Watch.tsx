@@ -69,9 +69,7 @@ export function Watch() {
               search.data !== undefined && (
                 <VideosList
                   videos={search.data}
-                  onVideoClick={(videoId) => {
-                    setSearchParams({ v: videoId, q: query });
-                  }}
+                  getVideoUrl={(videoId) => `/watch?v=${videoId}&q=${query}`}
                   size="sm"
                 />
               )}
