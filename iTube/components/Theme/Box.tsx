@@ -12,7 +12,7 @@ export interface BoxProps {
   $padding?: string;
   $margin?: string;
   $flexGrow?: boolean;
-  $overflow?: "scroll" | "hidden" | "auto";
+  $overflow?: string;
   $scrollbarWidth?: "auto" | "thin" | "none";
   $transform?: string;
   $fontSize?: string;

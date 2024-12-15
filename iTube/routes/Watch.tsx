@@ -37,10 +37,10 @@ export function Watch() {
       <FlexBox
         $direction="column"
         $width="100%"
+        $height="100%"
         $fontSize="2rem"
         $padding="1rem 1rem 0 1rem"
-        $height="100vh"
-        $overflow="scroll"
+        $overflow="hidden"
       >
         <Header
           searchParams={{
@@ -50,17 +50,20 @@ export function Watch() {
           }}
         />
         <Grid
-          $flexGrow
           $gridTemplateColumns="minmax(0, 1fr) auto"
           $margin="10px 30px 0 20px"
-          $overflow="scroll"
-          $scrollbarWidth="none"
+          $height="100%"
+          $overflow="hidden"
         >
-          <Box $padding="0 20px 10px 60px" $fontSize="1rem">
+          <Box
+            $padding="0 20px 10px 60px"
+            $overflow="hidden auto"
+            $fontSize="1rem"
+          >
             <YouTubePlayer videoId={videoId} />
             <VideoDetails video={video} />
           </Box>
-          <FlexBox $direction="column" $overflow="scroll">
+          <FlexBox $direction="column" $overflow="hidden auto">
             {query !== "" &&
               search !== undefined &&
               search.data !== undefined && (

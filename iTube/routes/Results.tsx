@@ -25,6 +25,7 @@ export function Results() {
       $flexGrow
       $fontSize="2rem"
       $padding="1rem"
+      $overflow="hidden auto"
     >
       <Header
         searchParams={{

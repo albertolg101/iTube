@@ -63,6 +63,8 @@ export const GlobalStyle = createGlobalStyle`
     body {
         font-family: ${({ theme }) => theme.font.family};
         background-color: ${({ theme }) => theme.palette.background.body};
+        scrollbar-color: ${({ theme }) =>
+          `${theme.palette.primary.main} ${theme.palette.background.body}`};
         margin: 0;
     }
     
