@@ -32,6 +32,7 @@ export type SearchResult = SearchResultItem[];
 export type Video = {
   url: string;
   title: string;
+  shortDescription: string;
   description: string;
   owner: string;
   thumbnailUrl: string;
@@ -41,7 +42,6 @@ export type Video = {
   duration: number;
   views: number;
   likeCount: number;
-  dislikeCount: number;
 };
 
 export type PlaylistVideo = {

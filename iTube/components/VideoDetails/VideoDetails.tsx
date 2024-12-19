@@ -1,10 +1,27 @@
 import type * as youtube from "@/hooks/youtube";
 import React from "react";
 import { SWRResponse } from "swr";
+import styled from "styled-components";
 import { Box, Button, FlexBox, Typography } from "@/components/Theme";
 import { CustomTheme } from "@/CustomTheme";
 import { numberToShortFormat, toTimeAgoString } from "@/hooks/youtube";
 import { AddVideoToPlaylistModal } from "@/components/PlaylistsModal/AddVideoToPlaylistModal.tsx";
+
+const DescriptionBox = styled(Box)`
+  margin: 10px 0 10px 10px;
+  padding: 1px 20px;
+  background: ${({ theme }) => theme.palette.primary.main};
+  border-radius: 12px;
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme }) => theme.palette.primary.light};
+  }
+
+  &:active {
+    background: ${({ theme }) => theme.palette.primary.dark};
+  }
+`;
 
 export interface VideoDetailsProps {
   videoId: string;
@@ -14,6 +31,26 @@ export interface VideoDetailsProps {
 export function VideoDetails({ videoId, video }: VideoDetailsProps) {
   const [showAddToPlaylistModal, setShowAddToPlaylistModal] =
     React.useState<boolean>(false);
+  const [showShortDescription, toggleShowShortDescription] = React.useReducer(
+    (v) => !v,
+    true,
+  );
+  const touchStartTime = React.useRef<Date>();
+
+  function handleDescriptionTouchStart() {
+    touchStartTime.current = new Date();
+  }
+
+  function handleDescriptionTouchEnd() {
+    if (touchStartTime.current !== undefined) {
+      const touchEndTime = new Date();
+      const duration =
+        touchEndTime.getTime() - touchStartTime.current.getTime();
+      if (duration < 500) {
+        toggleShowShortDescription();
+      }
+    }
+  }
 
   return video.isLoading ? (
     <>
@@ -70,11 +107,9 @@ export function VideoDetails({ videoId, video }: VideoDetailsProps) {
             </Button>
           </Box>
         </FlexBox>
-        <Box
-          $margin="10px 0 10px 10px"
-          $padding="1px 20px"
-          $background={CustomTheme.palette.primary.main}
-          $borderRadius="12px"
+        <DescriptionBox
+          onPointerDown={handleDescriptionTouchStart}
+          onPointerUp={handleDescriptionTouchEnd}
         >
           <Typography as="p" $margin="1rem 0" $weight="medium">
             <Typography as="span" $size="subtitle1" $weight="bold">
@@ -85,9 +120,13 @@ export function VideoDetails({ videoId, video }: VideoDetailsProps) {
               {video.data.genre}
             </Typography>
             <br />
-            {video.data.description}
+            <Typography as="p" $whiteSpace="pre-wrap">
+              {showShortDescription
+                ? video.data.shortDescription
+                : video.data.description}
+            </Typography>
           </Typography>
-        </Box>
+        </DescriptionBox>
         <AddVideoToPlaylistModal
           isOpen={showAddToPlaylistModal}
           onClose={() => setShowAddToPlaylistModal(false)}
