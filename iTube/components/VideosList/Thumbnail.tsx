@@ -1,9 +1,9 @@
-import type * as youtube from "@/libs/youtube.d";
+import type * as youtube from "@/hooks/youtube";
 import type { VideosListSize } from "@/components/VideosList/VideosList.tsx";
 import { Box, Img, Typography } from "@/components/Theme";
 
 export interface ThumbnailProps {
-  video: youtube.VideosListItem;
+  video: youtube.SearchResultItem;
   size: VideosListSize;
 }
 

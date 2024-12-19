@@ -1,4 +1,4 @@
-import type * as youtube from "@/libs/youtube.d";
+import type * as youtube from "@/hooks/youtube";
 import styled from "styled-components";
 import { Box } from "@/components/Theme";
 
@@ -7,7 +7,7 @@ const IFrame = styled(Box).attrs({ as: "iframe" })`
 `;
 
 export interface YouTubePlayerProps {
-  videoId: youtube.VideosListItem["id"]["videoId"];
+  videoId: youtube.SearchResultItem["id"]["videoId"];
 }
 
 export function YouTubePlayer({ videoId }: YouTubePlayerProps) {
