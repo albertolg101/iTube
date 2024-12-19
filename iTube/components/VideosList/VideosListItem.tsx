@@ -1,7 +1,7 @@
 import type * as youtube from "@/hooks/youtube";
 import type { VideosListSize } from "@/components/VideosList/VideosList.tsx";
 import { FlexBox, ListItem, Typography } from "@/components/Theme";
-import { CustomTheme } from "@/libs/CustomTheme.ts";
+import { CustomTheme } from "@/CustomTheme";
 import { Thumbnail } from "@/components/VideosList/Thumbnail.tsx";
 import { numberToShortFormat } from "@/hooks/youtube";
 import { Link } from "react-router";

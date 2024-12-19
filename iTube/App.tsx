@@ -1,5 +1,5 @@
 import { ThemeProvider } from "styled-components";
-import { CustomTheme, GlobalStyle } from "@/libs/CustomTheme.ts";
+import { CustomTheme, GlobalStyle } from "@/CustomTheme";
 import { Outlet } from "react-router";
 
 export default function App() {
