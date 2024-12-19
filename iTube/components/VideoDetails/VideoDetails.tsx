@@ -13,6 +13,7 @@ const DescriptionBox = styled(Box)`
   background: ${({ theme }) => theme.palette.primary.main};
   border-radius: 12px;
   cursor: pointer;
+  transition: background 0.3s;
 
   &:hover {
     background: ${({ theme }) => theme.palette.primary.light};
