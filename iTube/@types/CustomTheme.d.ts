@@ -1,5 +1,5 @@
 import "styled-components";
-import { CustomTheme } from "./customTheme.ts";
+import { CustomTheme } from "@/CustomTheme";
 
 type CustomThemeType = typeof CustomTheme;
 
