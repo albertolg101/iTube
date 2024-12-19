@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router";
-import { useSearch } from "@/libs/youtube.ts";
+import { useSearch } from "@/hooks/youtube";
 import { FlexBox } from "@/components/Theme";
 import { VideosList } from "@/components/VideosList";
 import { Header } from "@/components/Header";

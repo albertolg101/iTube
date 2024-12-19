@@ -1,11 +1,11 @@
-import type * as youtube from "@/libs/youtube.d";
+import type * as youtube from "@/hooks/youtube";
 import { SWRResponse } from "swr";
 import { Box, Typography } from "@/components/Theme";
 import { CustomTheme } from "@/libs/CustomTheme.ts";
-import { numberToShortFormat, toTimeAgoString } from "@/libs/youtube.ts";
+import { numberToShortFormat, toTimeAgoString } from "@/hooks/youtube";
 
 export interface VideoDetailsProps {
-  video: SWRResponse<youtube.VideoDetails | youtube.ErrorResponse>;
+  video: SWRResponse<youtube.Video | youtube.ErrorResponse>;
 }
 
 export function VideoDetails({ video }: VideoDetailsProps) {

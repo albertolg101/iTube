@@ -2,7 +2,7 @@ export type ErrorResponse = {
   status: false;
 };
 
-export type VideosListItem = {
+export type SearchResultItem = {
   id: {
     videoId: string;
   };
@@ -27,9 +27,9 @@ export type VideosListItem = {
   views: string;
 };
 
-export type VideosList = VideoListItem[];
+export type SearchResult = SearchResultItem[];
 
-export type VideoDetails = {
+export type Video = {
   url: string;
   title: string;
   description: string;
@@ -43,3 +43,11 @@ export type VideoDetails = {
   likeCount: number;
   dislikeCount: number;
 };
+
+export type Playlist = {
+  id: string;
+  name: string;
+  videos: string[];
+};
+
+export type PlaylistsList = Playlist[];

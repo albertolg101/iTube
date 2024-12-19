@@ -1,9 +1,9 @@
-import type * as youtube from "@/libs/youtube.d";
+import type * as youtube from "@/hooks/youtube";
 import React from "react";
 import { useSearchParams } from "react-router";
 import "@rmwc/circular-progress/styles";
 import { Box, FlexBox, Grid } from "@/components/Theme";
-import { useVideoDetails, useSearch } from "@/libs/youtube.ts";
+import { useVideo, useSearch } from "@/hooks/youtube";
 import { YouTubePlayer } from "@/components/YouTubePlayer";
 import { ErrorPage } from "@/components/ErrorPage";
 import { VideosList } from "@/components/VideosList";
@@ -13,12 +13,14 @@ import { VideoDetails } from "@/components/VideoDetails";
 
 export function Watch() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchRef = React.useRef<null | SWRResponse<youtube.VideosList>>(null);
+  const searchRef = React.useRef<null | SWRResponse<youtube.SearchResult>>(
+    null,
+  );
 
   const videoId = searchParams.get("v");
   const query = searchParams.get("q") || "";
 
-  const video = useVideoDetails(videoId || "404");
+  const video = useVideo(videoId || "404");
   const searchResponse = useSearch(query);
 
   let search = searchResponse;

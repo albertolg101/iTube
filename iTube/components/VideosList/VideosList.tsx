@@ -1,11 +1,11 @@
-import type * as youtube from "@/libs/youtube.d";
+import type * as youtube from "@/hooks/youtube";
 import { List } from "@/components/Theme";
 import { VideosListItem } from "@/components/VideosList/VideosListItem";
 
 export type VideosListSize = "md" | "sm";
 
 export interface VideosListProps {
-  videos: youtube.VideosList;
+  videos: youtube.SearchResult;
   getVideoUrl(videoId: string): string;
   size?: VideosListSize;
 }

@@ -1,13 +1,13 @@
-import type * as youtube from "@/libs/youtube.d";
+import type * as youtube from "@/hooks/youtube";
 import type { VideosListSize } from "@/components/VideosList/VideosList.tsx";
 import { FlexBox, ListItem, Typography } from "@/components/Theme";
 import { CustomTheme } from "@/libs/CustomTheme.ts";
 import { Thumbnail } from "@/components/VideosList/Thumbnail.tsx";
-import { numberToShortFormat } from "@/libs/youtube.ts";
+import { numberToShortFormat } from "@/hooks/youtube";
 import { Link } from "react-router";
 
 interface VideosListItemProps {
-  video: youtube.VideosListItem;
+  video: youtube.SearchResultItem;
   size: VideosListSize;
   toUrl: string;
 }
