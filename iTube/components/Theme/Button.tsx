@@ -18,8 +18,9 @@ export const Button = styled.button<ButtonProps>`
       ? theme.palette.primary.main
       : theme.palette.background.primary};
   border: 2px solid ${({ theme }) => theme.palette.primary.main};
-  padding: 0.2rem 0.6rem;
-  border-radius: 0.5em;
+  height: fit-content;
+  padding: 0.5em 0.6em;
+  border-radius: 2em;
   cursor: pointer;
   transition: all 0.2s;
 

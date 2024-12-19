@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 
 export interface BoxProps {
-  $position?: "absolute" | "relative";
+  $position?: "absolute" | "relative" | "fixed";
   $top?: string;
   $left?: string;
   $right?: string;

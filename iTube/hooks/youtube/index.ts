@@ -1,5 +1,3 @@
-export { useSearch, useVideo, usePlaylists, usePlaylist } from "./youtube";
-export { numberToShortFormat, toTimeAgoString } from "./utils";
 export type {
   ErrorResponse,
   SearchResultItem,
@@ -8,3 +6,12 @@ export type {
   Playlist,
   PlaylistsList,
 } from "./types";
+export {
+  createPlaylist,
+  destroyPlaylist,
+  updatePlaylist,
+  addVideoToPlaylist,
+  removeVideoFromPlaylist,
+} from "./api";
+export { useSearch, useVideo, usePlaylists, usePlaylist } from "./hooks";
+export { numberToShortFormat, toTimeAgoString } from "./utils";

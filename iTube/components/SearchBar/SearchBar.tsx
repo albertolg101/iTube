@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Search from "@/assets/search.svg";
+import Search from "@/assets/icons/search.svg?react";
 import { useForm } from "react-hook-form";
 import { Button, FlexBox } from "@/components/Theme";
 import { CircularProgress } from "@rmwc/circular-progress";
@@ -22,15 +22,9 @@ const Input = styled.input<InputProps>`
 
 const SubmitButton = styled(Button)`
   width: 2em;
-  padding: 0 0.3em;
+  padding: 0.3em 0.5em 0.1em 0.2em;
   border: 2px solid ${({ theme }) => theme.palette.primary.main};
   border-radius: 0 1em 1em 0;
-`;
-
-const Icon = styled.img`
-  width: 1em;
-  filter: invert(1);
-  transform: translate(-0.1em, 0.1em);
 `;
 
 export interface SearchBarProps {
@@ -61,7 +55,7 @@ export function SearchBar({
           {isLoading ? (
             <CircularProgress size="small" color="red" />
           ) : (
-            <Icon src={Search} alt="Search" />
+            <Search fill="currentColor" width="1em" height="1em" />
           )}
         </SubmitButton>
       </FlexBox>

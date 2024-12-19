@@ -63,7 +63,7 @@ export function Watch() {
             $fontSize="1rem"
           >
             <YouTubePlayer videoId={videoId} />
-            <VideoDetails video={video} />
+            <VideoDetails videoId={videoId} video={video} />
           </Box>
           <FlexBox $direction="column" $overflow="hidden auto">
             {query !== "" &&

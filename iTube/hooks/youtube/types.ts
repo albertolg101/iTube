@@ -44,10 +44,28 @@ export type Video = {
   dislikeCount: number;
 };
 
-export type Playlist = {
-  id: string;
-  name: string;
-  videos: string[];
+export type PlaylistVideo = {
+  videoId: string;
+  thumbnailUrl: string;
+  duration: number;
+  title: string;
+  views: number;
+  publishSince: string;
+  owner: string;
 };
 
-export type PlaylistsList = Playlist[];
+export type BackendPlaylist = {
+  id: string;
+  name: string;
+  videos: PlaylistVideo[];
+};
+
+export type Playlist = BackendPlaylist & {
+  [videoId: string]: PlaylistVideo;
+};
+
+export type BackendPlaylistsList = {
+  playlists: Playlist[];
+};
+
+export type PlaylistsList = Record<string, Playlist>;

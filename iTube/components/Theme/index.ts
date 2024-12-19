@@ -1,6 +1,5 @@
 export { Box } from "./Box.tsx";
 export { Button } from "./Button.tsx";
-export { FixedBox } from "./FixedBox.tsx";
 export { FlexBox } from "./FlexBox.tsx";
 export { Grid } from "./Grid.tsx";
 export { IconButton } from "./IconButton.tsx";
@@ -12,7 +11,6 @@ export { Typography } from "./Typography.tsx";
 
 export type { BoxProps } from "./Box.tsx";
 export type { ButtonProps } from "./Button.tsx";
-export type { FixedBoxProps } from "./FixedBox.tsx";
 export type { FlexBoxProps } from "./FlexBox.tsx";
 export type { GridProps } from "./Grid.tsx";
 export type { ImgProps } from "./Img.tsx";
