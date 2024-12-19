@@ -18,6 +18,7 @@ export function VideoDetails({ videoId, video }: VideoDetailsProps) {
   return video.isLoading ? (
     <>
       <Box
+        key="loading-title"
         animate={{ opacity: [0.6, 0.2, 0.6] }}
         transition={{
           duration: 3,
@@ -32,6 +33,7 @@ export function VideoDetails({ videoId, video }: VideoDetailsProps) {
         $borderRadius="5px"
       />
       <Box
+        key="loading-owner"
         animate={{ opacity: [0.6, 0.2, 0.6] }}
         transition={{
           duration: 3,
