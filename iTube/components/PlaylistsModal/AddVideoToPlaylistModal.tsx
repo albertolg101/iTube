@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import Close from "@/assets/icons/close.svg?react";
+import DeleteForever from "@/assets/icons/delete_forever.svg?react";
 import {
   addVideoToPlaylist,
   createPlaylist,
+  destroyPlaylist,
   removeVideoFromPlaylist,
   usePlaylists,
 } from "@/hooks/youtube";
@@ -40,6 +42,9 @@ export function AddVideoToPlaylistModal({
   const [newPlaylistName, setNewPlaylistName] = React.useState<string | null>(
     null,
   );
+  const [playlistsBeingDestroyed, setPlaylistsBeingDestroyed] = React.useState<
+    string[]
+  >([]);
   const { register, handleSubmit } = useForm();
 
   function handleClose() {
@@ -69,6 +74,15 @@ export function AddVideoToPlaylistModal({
       setNewPlaylistName(null);
       playlists.mutate();
     }
+  }
+
+  async function handleDelete(playlistId: string) {
+    setPlaylistsBeingDestroyed([...playlistsBeingDestroyed, playlistId]);
+    await destroyPlaylist(playlistId);
+    playlists.mutate();
+    setPlaylistsBeingDestroyed(
+      playlistsBeingDestroyed.filter((id) => id !== playlistId),
+    );
   }
 
   return (
@@ -105,7 +119,7 @@ export function AddVideoToPlaylistModal({
             playlists.data !== undefined && (
               <>
                 <Grid
-                  $gridTemplateColumns="1fr auto"
+                  $gridTemplateColumns="1fr auto auto"
                   $gridGap="10px"
                   $padding="0 20px 0 10px"
                   $overflow="hidden scroll"
@@ -121,6 +135,16 @@ export function AddVideoToPlaylistModal({
                         defaultChecked={video.videoId in playlist.videos}
                         {...register(playlist.id)}
                       />
+                      {playlistsBeingDestroyed.includes(playlist.id) ? (
+                        <CircularProgress size="small" />
+                      ) : (
+                        <IconButton
+                          type="button"
+                          onClick={() => handleDelete(playlist.id)}
+                        >
+                          <DeleteForever fill="currentColor" />
+                        </IconButton>
+                      )}
                     </React.Fragment>
                   ))}
                   {newPlaylistName !== null && (
