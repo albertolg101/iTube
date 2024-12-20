@@ -25,6 +25,7 @@ export interface TypographyProps {
   $margin?: string;
   $maxLines?: number;
   $whiteSpace?: "normal" | "nowrap" | "pre-wrap";
+  $wordWrap?: "break-word";
   $hoverColor?: string;
   $underlinedOnHover?: boolean;
 }
@@ -49,6 +50,7 @@ export const Typography = styled.p<TypographyProps>`
       `-webkit-box-orient: vertical;` +
       `overflow: hidden;`};
   ${({ $whiteSpace }) => $whiteSpace && `white-space: ${$whiteSpace}`};
+  ${({ $wordWrap }) => $wordWrap && `word-wrap: ${$wordWrap}`};
 
   &:hover {
     color: ${({ $hoverColor, $color }) => $hoverColor || $color};

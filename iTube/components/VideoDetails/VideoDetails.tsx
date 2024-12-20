@@ -116,7 +116,12 @@ export function VideoDetails({ videoId, video, playlists }: VideoDetailsProps) {
           onPointerDown={handleDescriptionTouchStart}
           onPointerUp={handleDescriptionTouchEnd}
         >
-          <Typography as="p" $margin="1rem 0" $weight="medium">
+          <Typography
+            as="p"
+            $margin="1rem 0"
+            $weight="medium"
+            $wordWrap="break-word"
+          >
             <Typography as="span" $size="subtitle1" $weight="bold">
               {`${numberToShortFormat(video.data.views)} views`}
               {" • "}
@@ -125,7 +130,7 @@ export function VideoDetails({ videoId, video, playlists }: VideoDetailsProps) {
               {video.data.genre}
             </Typography>
             <br />
-            <Typography as="p" $whiteSpace="pre-wrap">
+            <Typography as="span" $whiteSpace="pre-wrap">
               {showShortDescription
                 ? video.data.shortDescription
                 : video.data.description}
