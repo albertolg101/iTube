@@ -4,6 +4,7 @@ import type {
   ErrorResponse,
   BackendPlaylistsList,
   BackendPlaylist,
+  PlaylistsList,
 } from "./types";
 import { SEARCH_PATH, VIDEOS_PATH, PLAYLISTS_PATH, fetcher } from "./api";
 import useSWR from "swr";
@@ -28,7 +29,7 @@ export function usePlaylists(userId: string) {
   );
 
   if (response.data === undefined) {
-    return { ...response, data: undefined };
+    return { response, data: undefined };
   }
 
   const data = Object.fromEntries(
@@ -41,7 +42,7 @@ export function usePlaylists(userId: string) {
         ),
       },
     ]),
-  );
+  ) as unknown as PlaylistsList;
 
   return { ...response, data };
 }
