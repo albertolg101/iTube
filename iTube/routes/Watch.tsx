@@ -51,7 +51,7 @@ export function Watch() {
   if (v !== null && v.length > 11) {
     playlistId = v;
   }
-  const playlist = usePlaylist(playlistId || "404");
+  const playlist = usePlaylist(playlistId || "404", { refreshInterval: 10000 });
 
   let index = parseInt(i || "0");
   if (isNaN(index)) {
@@ -68,7 +68,7 @@ export function Watch() {
   const video = useVideo(videoId || "404");
 
   const searchResponse = useSearch(query);
-  const playlists = usePlaylists("iTube");
+  const playlists = usePlaylists("iTube", { refreshInterval: 10000 });
 
   let search = searchResponse;
   if (searchResponse.data !== undefined) {

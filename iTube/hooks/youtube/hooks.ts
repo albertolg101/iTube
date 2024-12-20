@@ -10,8 +10,8 @@ import type {
 import { SEARCH_PATH, VIDEOS_PATH, PLAYLISTS_PATH, fetcher } from "./api";
 import useSWR from "swr";
 
-function useGet<DataType>(url: string) {
-  return useSWR<DataType>(url, fetcher.bind(null, "GET"));
+function useGet<DataType>(url: string, kwargs?: Record<string, unknown>) {
+  return useSWR<DataType>(url, fetcher.bind(null, "GET"), kwargs);
 }
 
 export function useSearch(query: string) {
@@ -23,10 +23,11 @@ export function useVideo(videoId: string) {
   return useGet<Video | ErrorResponse>(`${VIDEOS_PATH}/${videoId}`);
 }
 
-export function usePlaylists(userId: string) {
+export function usePlaylists(userId: string, kwargs?: Record<string, unknown>) {
   const queryParams = new URLSearchParams({ userId });
   const response = useGet<BackendPlaylistsList>(
     `${PLAYLISTS_PATH}?${queryParams}`,
+    kwargs,
   );
 
   if (response.data === undefined) {
@@ -48,9 +49,13 @@ export function usePlaylists(userId: string) {
   return { ...response, data };
 }
 
-export function usePlaylist(playlistId: string) {
+export function usePlaylist(
+  playlistId: string,
+  kwargs?: Record<string, unknown>,
+) {
   const response = useGet<BackendPlaylist | ErrorResponse>(
     `${PLAYLISTS_PATH}/${playlistId}`,
+    kwargs,
   );
   if (response.data === undefined) {
     return { ...response, data: undefined };
