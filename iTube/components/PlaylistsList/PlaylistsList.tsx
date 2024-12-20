@@ -17,14 +17,16 @@ export function PlaylistsList({
 }: PlaylistsListProps) {
   return (
     <List $fontSize={size === "md" ? "1rem" : "0.8rem"} $margin="0 10px">
-      {Object.values(playlists).map((playlist, index) => (
-        <PlaylistsListItem
-          key={playlist.id}
-          playlist={playlist}
-          size={size}
-          toUrl={getPlaylistUrl(playlist.id, index)}
-        />
-      ))}
+      {Object.values(playlists)
+        .filter((playlist) => Object.values(playlist.videos).length > 0)
+        .map((playlist, index) => (
+          <PlaylistsListItem
+            key={playlist.id}
+            playlist={playlist}
+            size={size}
+            toUrl={getPlaylistUrl(playlist.id, index)}
+          />
+        ))}
     </List>
   );
 }
