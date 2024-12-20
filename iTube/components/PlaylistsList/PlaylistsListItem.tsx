@@ -34,9 +34,12 @@ export function PlaylistsListItem({
               {Object.values(playlist.videos)
                 .slice(0, 3)
                 .map((video) => (
-                  <ListItem $listStyleType="circle" $color="black">
+                  <ListItem
+                    key={video.videoId}
+                    $listStyleType="circle"
+                    $color="black"
+                  >
                     <Typography
-                      key={video.videoId}
                       as="p"
                       $size="subtitle1"
                       $margin="0.3em 0"
