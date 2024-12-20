@@ -1,7 +1,9 @@
 import React from "react";
+import styled from "styled-components";
 import Close from "@/assets/icons/close.svg?react";
 import {
   addVideoToPlaylist,
+  createPlaylist,
   removeVideoFromPlaylist,
   usePlaylists,
 } from "@/hooks/youtube";
@@ -19,6 +21,10 @@ import { CustomTheme } from "@/CustomTheme";
 import { useForm } from "react-hook-form";
 import { PlaylistVideo } from "@/hooks/youtube/types";
 
+const Input = styled.input`
+  font-size: ${({ theme }) => theme.font.sizes.h6};
+`;
+
 export type PlaylistsModalProps = {
   video: PlaylistVideo;
   isOpen: boolean;
@@ -31,7 +37,15 @@ export function AddVideoToPlaylistModal({
   onClose,
 }: PlaylistsModalProps) {
   const playlists = usePlaylists("iTube");
+  const [newPlaylistName, setNewPlaylistName] = React.useState<string | null>(
+    null,
+  );
   const { register, handleSubmit } = useForm();
+
+  function handleClose() {
+    setNewPlaylistName(null);
+    onClose();
+  }
 
   async function onSubmit(data: Record<string, boolean>) {
     if (playlists.data !== undefined) {
@@ -46,11 +60,19 @@ export function AddVideoToPlaylistModal({
       });
     }
 
-    onClose();
+    handleClose();
+  }
+
+  async function handleCreateNewPlaylist() {
+    if (newPlaylistName !== null && newPlaylistName !== "") {
+      await createPlaylist("iTube", newPlaylistName);
+      setNewPlaylistName(null);
+      playlists.mutate();
+    }
   }
 
   return (
-    <Overlay isOpen={isOpen} onClose={onClose}>
+    <Overlay isOpen={isOpen} onClose={handleClose}>
       <FlexBox
         as="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -65,44 +87,92 @@ export function AddVideoToPlaylistModal({
           <Typography as="h3" $size="h4" $weight="medium">
             Add video to:
           </Typography>
-          <IconButton type="button" onClick={onClose}>
+          <IconButton type="button" onClick={handleClose}>
             <Close fill="currentColor" />
           </IconButton>
         </Grid>
-        <Box $flexGrow $padding="10px 0 0 0">
+        <FlexBox
+          $flexGrow
+          $direction="column"
+          $padding="10px 0 0 0"
+          $overflow="hidden"
+        >
           {playlists.isLoading ? (
             <FlexBox $centered $height="100%">
               <CircularProgress size="large" />
             </FlexBox>
           ) : (
             playlists.data !== undefined && (
-              <Grid
-                $gridTemplateColumns="1fr auto"
-                $gridGap="10px"
-                $padding="0 0 0 10px"
-              >
-                {Object.values(playlists.data).map((playlist) => (
-                  <React.Fragment key={playlist.id}>
-                    <label htmlFor={playlist.id}>
-                      <Typography as="p">{playlist.name}</Typography>
-                    </label>
-                    <input
-                      id={playlist.id}
-                      type="checkbox"
-                      defaultChecked={video.videoId in playlist.videos}
-                      {...register(playlist.id)}
+              <>
+                <Grid
+                  $gridTemplateColumns="1fr auto"
+                  $gridGap="10px"
+                  $padding="0 20px 0 10px"
+                  $overflow="hidden scroll"
+                >
+                  {Object.values(playlists.data).map((playlist) => (
+                    <React.Fragment key={playlist.id}>
+                      <label htmlFor={playlist.id}>
+                        <Typography as="p">{playlist.name}</Typography>
+                      </label>
+                      <input
+                        id={playlist.id}
+                        type="checkbox"
+                        defaultChecked={video.videoId in playlist.videos}
+                        {...register(playlist.id)}
+                      />
+                    </React.Fragment>
+                  ))}
+                  {newPlaylistName !== null && (
+                    <Input
+                      type="text"
+                      autoFocus
+                      onChange={(e) => setNewPlaylistName(e.target.value)}
                     />
-                  </React.Fragment>
-                ))}
-              </Grid>
+                  )}
+                </Grid>
+                <Box $margin="15px 0">
+                  {newPlaylistName === null ? (
+                    <Button
+                      type="button"
+                      $variant="contained"
+                      onClick={setNewPlaylistName.bind(null, "")}
+                    >
+                      Add new playlist
+                    </Button>
+                  ) : (
+                    <FlexBox $direction="row" $gap="10px">
+                      <Button
+                        type="button"
+                        $variant="outlined"
+                        onClick={setNewPlaylistName.bind(null, null)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="button"
+                        $variant="contained"
+                        disabled={newPlaylistName === ""}
+                        onClick={handleCreateNewPlaylist}
+                      >
+                        Save
+                      </Button>
+                    </FlexBox>
+                  )}
+                </Box>
+              </>
             )
           )}
-        </Box>
+        </FlexBox>
         <FlexBox $width="100%" $justifyContent="end" $gap="10px">
-          <Button type="button" $variant="outlined" onClick={onClose}>
+          <Button type="button" $variant="outlined" onClick={handleClose}>
             Cancel
           </Button>
-          <Button type="submit" $variant="contained">
+          <Button
+            type="submit"
+            $variant="contained"
+            disabled={newPlaylistName !== null}
+          >
             Accept
           </Button>
         </FlexBox>

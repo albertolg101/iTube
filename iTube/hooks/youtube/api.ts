@@ -30,7 +30,7 @@ export async function createPlaylist(
   name: string,
 ): Promise<CreatePlaylistResponse> {
   const body = { name, userId };
-  return fetcher("POST", PLAYLISTS_PATH, { body });
+  return fetcher("POST", PLAYLISTS_PATH, body);
 }
 
 type DestroyPlaylistResponse = {

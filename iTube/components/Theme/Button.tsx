@@ -47,4 +47,10 @@ export const Button = styled.button<ButtonProps>`
         : theme.palette.background.primary};
     border-color: ${({ theme }) => theme.palette.primary.dark};
   }
+
+  &:disabled {
+    border: 2px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+  }
 `;
