@@ -33,14 +33,15 @@ export type PlaylistsModalProps = {
   video: PlaylistVideo;
   isOpen: boolean;
   onClose: () => void;
+  playlists: ReturnType<typeof usePlaylists>;
 };
 
 export function AddVideoToPlaylistModal({
   video,
   isOpen,
   onClose,
+  playlists,
 }: PlaylistsModalProps) {
-  const playlists = usePlaylists("iTube");
   const [playlistBeingRenamed, setPlaylistBeingRenamed] = React.useState<
     string | null
   >(null);
@@ -74,15 +75,20 @@ export function AddVideoToPlaylistModal({
 
   async function onSubmit(data: Record<string, boolean>) {
     if (playlists.data !== undefined) {
+      const awaits: Promise<unknown>[] = [];
       Object.entries(data).forEach(([playlistId, checked]) => {
         const videoId = video.videoId;
         const videos = playlists.data[playlistId].videos;
         if (checked && !(videoId in videos)) {
-          addVideoToPlaylist(playlistId, video);
+          awaits.push(addVideoToPlaylist(playlistId, video));
         } else if (!checked && videoId in videos) {
-          removeVideoFromPlaylist(playlistId, video.videoId);
+          awaits.push(removeVideoFromPlaylist(playlistId, video.videoId));
         }
       });
+
+      Promise.all(awaits).then(() => playlists.mutate());
+    } else {
+      await playlists.mutate();
     }
 
     handleClose();

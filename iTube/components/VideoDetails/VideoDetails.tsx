@@ -5,7 +5,10 @@ import styled from "styled-components";
 import { Box, Button, FlexBox, Typography } from "@/components/Theme";
 import { CustomTheme } from "@/CustomTheme";
 import { numberToShortFormat, toTimeAgoString } from "@/hooks/youtube";
-import { AddVideoToPlaylistModal } from "@/components/PlaylistsModal/AddVideoToPlaylistModal.tsx";
+import {
+  AddVideoToPlaylistModal,
+  PlaylistsModalProps,
+} from "@/components/PlaylistsModal/AddVideoToPlaylistModal.tsx";
 
 const DescriptionBox = styled(Box)`
   margin: 10px 0 10px 10px;
@@ -27,9 +30,10 @@ const DescriptionBox = styled(Box)`
 export interface VideoDetailsProps {
   videoId: string;
   video: SWRResponse<youtube.Video | youtube.ErrorResponse>;
+  playlists: PlaylistsModalProps["playlists"];
 }
 
-export function VideoDetails({ videoId, video }: VideoDetailsProps) {
+export function VideoDetails({ videoId, video, playlists }: VideoDetailsProps) {
   const [showAddToPlaylistModal, setShowAddToPlaylistModal] =
     React.useState<boolean>(false);
   const [showShortDescription, toggleShowShortDescription] = React.useReducer(
@@ -141,6 +145,7 @@ export function VideoDetails({ videoId, video }: VideoDetailsProps) {
             owner: video.data.owner,
             shortDescription: video.data.shortDescription,
           }}
+          playlists={playlists}
         />
       </>
     )

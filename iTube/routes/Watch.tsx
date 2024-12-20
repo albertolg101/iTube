@@ -162,7 +162,11 @@ export function Watch() {
               videoId={videoId}
               onEnd={handleOnPlayerEnd}
             />
-            <VideoDetails videoId={videoId} video={video} />
+            <VideoDetails
+              videoId={videoId}
+              video={video}
+              playlists={playlists}
+            />
           </Box>
           <Box $overflow="hidden auto">
             {playlistId &&
