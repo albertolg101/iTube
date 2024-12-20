@@ -97,7 +97,7 @@ export function VideoDetails({ videoId, video }: VideoDetailsProps) {
               {video.data.owner}
             </Typography>
           </Box>
-          <Box $margin="10px 0 0 0">
+          <Box $margin="10px 0 0 0" $minWidth="10em">
             <Button
               $variant="contained"
               onClick={() => setShowAddToPlaylistModal(true)}

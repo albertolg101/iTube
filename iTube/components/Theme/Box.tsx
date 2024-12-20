@@ -8,8 +8,10 @@ export interface BoxProps {
   $right?: string;
   $bottom?: string;
   $width?: string;
+  $minWidth?: string;
   $maxWidth?: string;
   $height?: string;
+  $minHeight?: string;
   $maxHeight?: string;
   $padding?: string;
   $margin?: string;
@@ -33,8 +35,10 @@ export const Box = styled(motion.div)<BoxProps>`
   ${({ $right }) => $right && `right: ${$right}`};
   ${({ $bottom }) => $bottom && `bottom: ${$bottom}`};
   ${({ $width }) => $width && `width: ${$width}`};
+  ${({ $minWidth }) => $minWidth && `min-width: ${$minWidth}`};
   ${({ $maxWidth }) => $maxWidth && `max-width: ${$maxWidth}`};
   ${({ $height }) => $height && `height: ${$height}`};
+  ${({ $minHeight }) => $minHeight && `min-height: ${$minHeight}`};
   ${({ $maxHeight }) => $maxHeight && `max-height: ${$maxHeight}`};
   ${({ $padding }) => $padding && `padding: ${$padding}`};
   ${({ $margin }) => $margin && `margin: ${$margin}`};
