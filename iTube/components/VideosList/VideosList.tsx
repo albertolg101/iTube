@@ -1,12 +1,16 @@
-import type * as youtube from "@/hooks/youtube";
 import { List } from "@/components/Theme";
-import { VideosListItem } from "@/components/VideosList/VideosListItem";
+import {
+  VideosListItem,
+  VideosListItemProps,
+} from "@/components/VideosList/VideosListItem";
 
-export type VideosListSize = "md" | "sm";
+export type VideosListSize = "md" | "sm" | "xsm";
 
 export interface VideosListProps {
-  videos: youtube.SearchResult;
-  getVideoUrl(videoId: string): string;
+  videos: (VideosListItemProps["video"] & {
+    id: string;
+  })[];
+  getVideoUrl(videoId: string, index: number): string;
   size?: VideosListSize;
 }
 
@@ -16,12 +20,15 @@ export function VideosList({
   size = "md",
 }: VideosListProps) {
   return (
-    <List $fontSize={size === "md" ? "1rem" : "0.8rem"} $margin="0 10px">
-      {videos.map((video) => (
+    <List
+      $fontSize={size === "md" ? "1rem" : size === "sm" ? "0.8rem" : "0.7rem"}
+      $margin="0 10px"
+    >
+      {videos.map((video, index) => (
         <VideosListItem
-          key={video.id.videoId}
+          key={video.id}
           video={video}
-          toUrl={getVideoUrl(video.id.videoId)}
+          toUrl={getVideoUrl(video.id, index)}
           size={size}
         />
       ))}

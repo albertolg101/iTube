@@ -10,7 +10,7 @@ interface PlaylistsListItemProps {
 }
 
 export function PlaylistsListItem({ playlist, size }: PlaylistsListItemProps) {
-  const toUrl = `/watch?v=${playlist.id}`;
+  const toUrl = `/watch?v=${playlist.id}&i=0`;
   return (
     <ListItem $margin="0 0 0.6em 0">
       <FlexBox $direction="row" $gap="0.6em">

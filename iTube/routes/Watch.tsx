@@ -3,8 +3,14 @@ import React from "react";
 import styled from "styled-components";
 import { useSearchParams } from "react-router";
 import "@rmwc/circular-progress/styles";
-import { Box, FlexBox, Grid } from "@/components/Theme";
-import { useVideo, useSearch, usePlaylists } from "@/hooks/youtube";
+import { Box, FlexBox, Grid, Typography } from "@/components/Theme";
+import {
+  useVideo,
+  useSearch,
+  usePlaylists,
+  usePlaylist,
+  toTime,
+} from "@/hooks/youtube";
 import { YouTubePlayer } from "@/components/YouTubePlayer";
 import { ErrorPage } from "@/components/ErrorPage";
 import { VideosList } from "@/components/VideosList";
@@ -13,6 +19,7 @@ import { SWRResponse } from "swr";
 import { VideoDetails } from "@/components/VideoDetails";
 import ArrowDropDown from "@/assets/icons/arrow_drop_down.svg";
 import { PlaylistsList } from "@/components/PlaylistsList";
+import { CustomTheme } from "@/CustomTheme.ts";
 
 const Select = styled.select`
   font-size: 0.5em;
@@ -34,11 +41,31 @@ export function Watch() {
     null,
   );
   const [selectValue, setSelectValue] = React.useState<string>("video");
+  const youtubePlayerRef = React.useRef<null | HTMLDivElement>(null);
 
-  const videoId = searchParams.get("v");
+  const v = searchParams.get("v");
+  const i = searchParams.get("i");
   const query = searchParams.get("q") || "";
 
+  let playlistId: string | null = null;
+  if (v !== null && v.length > 11) {
+    playlistId = v;
+  }
+  const playlist = usePlaylist(playlistId || "404");
+
+  let videoId: string | null = null;
+  if (v !== null && v.length === 11) {
+    videoId = v;
+  } else if (playlist.data !== undefined && "id" in playlist.data) {
+    let index = parseInt(i || "0");
+    if (isNaN(index)) {
+      index = 0;
+    }
+    index = Math.min(index, Object.values(playlist.data.videos).length - 1);
+    videoId = Object.values(playlist.data.videos)[index]?.videoId;
+  }
   const video = useVideo(videoId || "404");
+
   const searchResponse = useSearch(query);
   const playlists = usePlaylists("iTube");
 
@@ -49,9 +76,12 @@ export function Watch() {
     search = searchRef.current;
   }
 
-  return video.error ? (
+  return video.error || playlist.error ? (
     <ErrorPage errorCode={500} />
-  ) : video.data !== undefined && "status" in video.data ? (
+  ) : video.data !== undefined &&
+    "status" in video.data &&
+    playlist.data !== undefined &&
+    "success" in playlist.data ? (
     <ErrorPage errorCode={404} />
   ) : (
     videoId && (
@@ -65,13 +95,23 @@ export function Watch() {
       >
         <Header
           searchParams={{
-            onSearch: (query) => setSearchParams({ v: videoId, q: query }),
+            onSearch: (query) => {
+              const searchParams = new URLSearchParams({ q: query });
+              if (v !== null) {
+                searchParams.set("v", v);
+              }
+              if (i !== null) {
+                searchParams.set("i", i);
+              }
+              setSearchParams(searchParams);
+              setSelectValue("video");
+            },
             defaultValue: query,
             isLoading: searchResponse.isLoading,
           }}
         />
         <Grid
-          $gridTemplateColumns="minmax(0, 1fr) auto"
+          $gridTemplateColumns="1fr 13em"
           $margin="10px 30px 0 20px"
           $height="100%"
           $overflow="hidden"
@@ -81,10 +121,49 @@ export function Watch() {
             $overflow="hidden auto"
             $fontSize="1rem"
           >
-            <YouTubePlayer videoId={videoId} />
+            <YouTubePlayer videoId={videoId} ref={youtubePlayerRef} />
             <VideoDetails videoId={videoId} video={video} />
           </Box>
           <Box $overflow="hidden auto">
+            {playlistId &&
+              playlist.data !== undefined &&
+              "id" in playlist.data && (
+                <Box
+                  $background={CustomTheme.palette.background.primary}
+                  $padding="0.5em"
+                  $border={`solid 1px ${CustomTheme.palette.background.secondary}`}
+                  $borderRadius="12px"
+                  $maxHeight={
+                    youtubePlayerRef.current
+                      ? `${youtubePlayerRef.current.scrollHeight}px`
+                      : "18em"
+                  }
+                  $overflow="scroll"
+                >
+                  <Typography as="h4" $size="h6" $margin="0.3em">
+                    {playlist.data.name}:
+                  </Typography>
+                  <hr />
+                  <VideosList
+                    videos={Object.values(playlist.data.videos).map(
+                      (video) => ({
+                        id: video.videoId,
+                        title: video.title,
+                        thumbnailUrl: video.thumbnailUrl,
+                        views: video.views.toString(),
+                        duration: toTime(video.duration),
+                        owner: video.owner,
+                        publishedAt: video.publishedAt,
+                        shortDescription: video.shortDescription,
+                      }),
+                    )}
+                    getVideoUrl={(_, index) =>
+                      `/watch?v=${playlistId}&i=${index}&q=${query}`
+                    }
+                    size="xsm"
+                  />
+                </Box>
+              )}
             <Select
               value={selectValue}
               onChange={(e) => setSelectValue(e.target.value)}
@@ -98,7 +177,16 @@ export function Watch() {
                   search !== undefined &&
                   search.data !== undefined && (
                     <VideosList
-                      videos={search.data}
+                      videos={search.data.map((video) => ({
+                        id: video.id.videoId,
+                        title: video.snippet.title,
+                        thumbnailUrl: video.snippet.thumbnails.url,
+                        views: video.snippet.views,
+                        duration: video.snippet.duration,
+                        owner: video.channelName,
+                        publishedAt: video.snippet.publishedAt,
+                        shortDescription: video.description,
+                      }))}
                       getVideoUrl={(videoId) =>
                         `/watch?v=${videoId}&q=${query}`
                       }

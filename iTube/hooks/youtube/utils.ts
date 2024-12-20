@@ -36,3 +36,20 @@ export function toTimeAgoString(timestamp: string): string {
   }
   return `${Math.floor(seconds)} seconds ago`;
 }
+
+export function toTime(duration: number): string {
+  const days = Math.floor(duration / 86400);
+  const hours = Math.floor(duration / 3600);
+  const minutes = Math.floor((duration % 3600) / 60);
+  const seconds = duration % 60;
+
+  let time = `${minutes}:${seconds}`;
+  if (hours > 0) {
+    time = `${hours}:${time}`;
+  }
+  if (days > 0) {
+    time = `${days}:${time}`;
+  }
+
+  return time;
+}

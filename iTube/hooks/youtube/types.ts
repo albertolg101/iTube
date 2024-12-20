@@ -1,5 +1,6 @@
 export type ErrorResponse = {
   status: false;
+  success: false;
 };
 
 export type SearchResultItem = {
@@ -50,8 +51,9 @@ export type PlaylistVideo = {
   duration: number;
   title: string;
   views: number;
-  publishSince: string;
+  publishedAt: string;
   owner: string;
+  shortDescription: string;
 };
 
 export type BackendPlaylist = {

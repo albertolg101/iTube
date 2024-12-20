@@ -5,6 +5,7 @@ import type {
   BackendPlaylistsList,
   BackendPlaylist,
   PlaylistsList,
+  Playlist,
 } from "./types";
 import { SEARCH_PATH, VIDEOS_PATH, PLAYLISTS_PATH, fetcher } from "./api";
 import useSWR from "swr";
@@ -29,7 +30,7 @@ export function usePlaylists(userId: string) {
   );
 
   if (response.data === undefined) {
-    return { response, data: undefined };
+    return { ...response, data: undefined };
   }
 
   const data = Object.fromEntries(
@@ -48,9 +49,15 @@ export function usePlaylists(userId: string) {
 }
 
 export function usePlaylist(playlistId: string) {
-  const response = useGet<BackendPlaylist>(`${PLAYLISTS_PATH}/${playlistId}`);
+  const response = useGet<BackendPlaylist | ErrorResponse>(
+    `${PLAYLISTS_PATH}/${playlistId}`,
+  );
   if (response.data === undefined) {
     return { ...response, data: undefined };
+  }
+
+  if ("success" in response.data) {
+    return response;
   }
 
   const data = {
@@ -58,7 +65,7 @@ export function usePlaylist(playlistId: string) {
     videos: Object.fromEntries(
       response.data.videos.map((video) => [video.videoId, video]),
     ),
-  };
+  } as unknown as Playlist;
 
   return { ...response, data };
 }

@@ -8,7 +8,9 @@ export interface BoxProps {
   $right?: string;
   $bottom?: string;
   $width?: string;
+  $maxWidth?: string;
   $height?: string;
+  $maxHeight?: string;
   $padding?: string;
   $margin?: string;
   $flexGrow?: boolean;
@@ -16,6 +18,7 @@ export interface BoxProps {
   $scrollbarWidth?: "auto" | "thin" | "none";
   $transform?: string;
   $fontSize?: string;
+  $border?: string;
   $borderRadius?: string;
   $background?: string;
   $backgroundSize?: string;
@@ -28,7 +31,9 @@ export const Box = styled(motion.div)<BoxProps>`
   ${({ $right }) => $right && `right: ${$right}`};
   ${({ $bottom }) => $bottom && `bottom: ${$bottom}`};
   ${({ $width }) => $width && `width: ${$width}`};
+  ${({ $maxWidth }) => $maxWidth && `max-width: ${$maxWidth}`};
   ${({ $height }) => $height && `height: ${$height}`};
+  ${({ $maxHeight }) => $maxHeight && `max-height: ${$maxHeight}`};
   ${({ $padding }) => $padding && `padding: ${$padding}`};
   ${({ $margin }) => $margin && `margin: ${$margin}`};
   ${({ $flexGrow }) => $flexGrow && "flex-grow: 1"};
@@ -40,6 +45,7 @@ export const Box = styled(motion.div)<BoxProps>`
   ${({ $background }) => $background && `background: ${$background}`};
   ${({ $backgroundSize }) =>
     $backgroundSize && `background-size: ${$backgroundSize}`};
+  ${({ $border }) => $border && `border: ${$border}`};
   ${({ $borderRadius }) => $borderRadius && `border-radius: ${$borderRadius}`};
   box-sizing: border-box;
 `;

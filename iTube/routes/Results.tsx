@@ -34,7 +34,19 @@ export function Results() {
         }}
       />
       {data !== undefined && (
-        <VideosList videos={data} getVideoUrl={getVideoUrl} />
+        <VideosList
+          videos={data.map((video) => ({
+            id: video.id.videoId,
+            title: video.snippet.title,
+            thumbnailUrl: video.snippet.thumbnails.url,
+            views: video.snippet.views,
+            duration: video.snippet.duration,
+            owner: video.channelName,
+            publishedAt: video.snippet.publishedAt,
+            shortDescription: video.description,
+          }))}
+          getVideoUrl={getVideoUrl}
+        />
       )}
     </FlexBox>
   );

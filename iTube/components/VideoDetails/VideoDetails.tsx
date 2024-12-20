@@ -137,8 +137,9 @@ export function VideoDetails({ videoId, video }: VideoDetailsProps) {
             duration: video.data.duration,
             title: video.data.title,
             views: video.data.views,
-            publishSince: toTimeAgoString(video.data.datePublished),
+            publishedAt: toTimeAgoString(video.data.datePublished),
             owner: video.data.owner,
+            shortDescription: video.data.shortDescription,
           }}
         />
       </>

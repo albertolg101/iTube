@@ -1,4 +1,5 @@
 import type * as youtube from "@/hooks/youtube";
+import React from "react";
 import styled from "styled-components";
 import { Box } from "@/components/Theme";
 
@@ -10,12 +11,16 @@ export interface YouTubePlayerProps {
   videoId: youtube.SearchResultItem["id"]["videoId"];
 }
 
-export function YouTubePlayer({ videoId }: YouTubePlayerProps) {
+function _YouTubePlayer(
+  { videoId }: YouTubePlayerProps,
+  ref: React.Ref<HTMLDivElement>,
+) {
   const iFrameSrc = `https://www.youtube.com/embed/${videoId}`;
   const queryParams = new URLSearchParams({ autoplay: "1" });
 
   return (
     <Box
+      ref={ref}
       $position="relative"
       $width="100%"
       $height="0"
@@ -36,3 +41,5 @@ export function YouTubePlayer({ videoId }: YouTubePlayerProps) {
     </Box>
   );
 }
+
+export const YouTubePlayer = React.forwardRef(_YouTubePlayer);

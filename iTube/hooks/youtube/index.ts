@@ -14,4 +14,4 @@ export {
   removeVideoFromPlaylist,
 } from "./api";
 export { useSearch, useVideo, usePlaylists, usePlaylist } from "./hooks";
-export { numberToShortFormat, toTimeAgoString } from "./utils";
+export { numberToShortFormat, toTimeAgoString, toTime } from "./utils";

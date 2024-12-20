@@ -1,13 +1,21 @@
-import type * as youtube from "@/hooks/youtube";
 import type { VideosListSize } from "@/components/VideosList/VideosList.tsx";
 import { FlexBox, ListItem, Typography } from "@/components/Theme";
 import { CustomTheme } from "@/CustomTheme";
-import { Thumbnail } from "@/components/VideosList/Thumbnail.tsx";
+import {
+  Thumbnail,
+  ThumbnailProps,
+} from "@/components/VideosList/Thumbnail.tsx";
 import { numberToShortFormat } from "@/hooks/youtube";
 import { Link } from "react-router";
 
-interface VideosListItemProps {
-  video: youtube.SearchResultItem;
+export interface VideosListItemProps {
+  video: {
+    title: string;
+    views: string;
+    publishedAt: string;
+    owner: string;
+    shortDescription: string;
+  } & ThumbnailProps["video"];
   size: VideosListSize;
   toUrl: string;
 }
@@ -33,9 +41,9 @@ export function VideosListItem({ video, toUrl, size }: VideosListItemProps) {
               $size="subtitle1"
               $color={CustomTheme.palette.text.secondary}
             >
-              {numberToShortFormat(parseInt(video.snippet.views))}
+              {numberToShortFormat(parseInt(video.views))}
               {" - "}
-              {video.snippet.publishedAt}
+              {video.publishedAt}
             </Typography>
             <Typography
               as="p"
@@ -43,11 +51,11 @@ export function VideosListItem({ video, toUrl, size }: VideosListItemProps) {
               $weight="medium"
               $margin="0.6em 0"
             >
-              {video.channelName}
+              {video.owner}
             </Typography>
             {size === "md" && (
               <Typography as="p" $size="subtitle1" $margin="0.6em 0">
-                {video.description}
+                {video.shortDescription}
               </Typography>
             )}
           </FlexBox>
