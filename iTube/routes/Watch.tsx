@@ -53,14 +53,15 @@ export function Watch() {
   }
   const playlist = usePlaylist(playlistId || "404");
 
+  let index = parseInt(i || "0");
+  if (isNaN(index)) {
+    index = 0;
+  }
+
   let videoId: string | null = null;
   if (v !== null && v.length === 11) {
     videoId = v;
   } else if (playlist.data !== undefined && "id" in playlist.data) {
-    let index = parseInt(i || "0");
-    if (isNaN(index)) {
-      index = 0;
-    }
     index = Math.min(index, Object.values(playlist.data.videos).length - 1);
     videoId = Object.values(playlist.data.videos)[index]?.videoId;
   }
@@ -74,6 +75,41 @@ export function Watch() {
     searchRef.current = searchResponse;
   } else if (searchRef.current !== null && searchResponse.error === undefined) {
     search = searchRef.current;
+  }
+
+  function handleOnPlayerEnd() {
+    let nextV = null;
+    let nextI = null;
+
+    if (playlist.data !== undefined && "id" in playlist.data) {
+      const videos = Object.values(playlist.data.videos);
+      if (index + 1 < videos.length) {
+        nextV = playlist.data.id;
+        nextI = index + 1;
+      }
+    }
+
+    if (nextV === null && search.data !== undefined) {
+      if (search.data.length === 1) {
+        nextV = search.data[0].id.videoId;
+      } else {
+        while (nextV === null || nextV === videoId) {
+          const nextIndex = Math.floor(Math.random() * search.data.length);
+          nextV = search.data[nextIndex].id.videoId;
+        }
+      }
+    }
+
+    if (nextV !== null) {
+      const searchParams = new URLSearchParams({ v: nextV });
+      if (nextI !== null) {
+        searchParams.set("i", nextI.toString());
+      }
+      if (query !== "") {
+        searchParams.set("q", query);
+      }
+      setSearchParams(searchParams);
+    }
   }
 
   return video.error || playlist.error ? (
@@ -121,7 +157,11 @@ export function Watch() {
             $overflow="hidden auto"
             $fontSize="1rem"
           >
-            <YouTubePlayer videoId={videoId} ref={youtubePlayerRef} />
+            <YouTubePlayer
+              ref={youtubePlayerRef}
+              videoId={videoId}
+              onEnd={handleOnPlayerEnd}
+            />
             <VideoDetails videoId={videoId} video={video} />
           </Box>
           <Box $overflow="hidden auto">
