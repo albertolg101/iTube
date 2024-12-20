@@ -152,6 +152,9 @@ export function AddVideoToPlaylistModal({
                       type="text"
                       autoFocus
                       onChange={(e) => setNewPlaylistName(e.target.value)}
+                      onKeyDown={(e) =>
+                        e.key === "Enter" && handleCreateNewPlaylist()
+                      }
                     />
                   )}
                 </Grid>
