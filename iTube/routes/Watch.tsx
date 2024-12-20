@@ -234,7 +234,20 @@ export function Watch() {
                     />
                   )
                 : playlists.data !== undefined && (
-                    <PlaylistsList playlists={playlists.data} size="sm" />
+                    <PlaylistsList
+                      playlists={playlists.data}
+                      getPlaylistUrl={(playlistId) => {
+                        const searchParams = new URLSearchParams({
+                          v: playlistId,
+                          i: "0",
+                        });
+                        if (query !== "") {
+                          searchParams.set("q", query);
+                        }
+                        return `/watch?${searchParams}`;
+                      }}
+                      size="sm"
+                    />
                   )}
             </FlexBox>
           </Box>

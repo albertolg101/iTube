@@ -6,14 +6,24 @@ export type PlaylistsListSize = "md" | "sm";
 
 export interface PlaylistsListProps {
   playlists: youtube.PlaylistsList;
+  getPlaylistUrl(playlistId: string, index: number): string;
   size?: PlaylistsListSize;
 }
 
-export function PlaylistsList({ playlists, size = "md" }: PlaylistsListProps) {
+export function PlaylistsList({
+  playlists,
+  getPlaylistUrl,
+  size = "md",
+}: PlaylistsListProps) {
   return (
     <List $fontSize={size === "md" ? "1rem" : "0.8rem"} $margin="0 10px">
-      {Object.values(playlists).map((playlist) => (
-        <PlaylistsListItem key={playlist.id} playlist={playlist} size={size} />
+      {Object.values(playlists).map((playlist, index) => (
+        <PlaylistsListItem
+          key={playlist.id}
+          playlist={playlist}
+          size={size}
+          toUrl={getPlaylistUrl(playlist.id, index)}
+        />
       ))}
     </List>
   );
