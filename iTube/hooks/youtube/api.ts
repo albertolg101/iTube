@@ -1,5 +1,9 @@
 import axios from "axios";
-import { Playlist, PlaylistVideo } from "@/hooks/youtube/types";
+import {
+  BackendPlaylist,
+  Playlist,
+  PlaylistVideo,
+} from "@/hooks/youtube/types";
 
 type HTTPMethod = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -49,9 +53,9 @@ type updatePlaylistResponse = {
 
 export async function updatePlaylist(
   playlistId: string,
-  playlist: Playlist,
+  playlist: BackendPlaylist,
 ): Promise<updatePlaylistResponse> {
-  return fetcher("PUT", `${PLAYLISTS_PATH}/${playlistId}`, { playlist });
+  return fetcher("PUT", `${PLAYLISTS_PATH}/${playlistId}`, playlist);
 }
 
 export async function addVideoToPlaylist(

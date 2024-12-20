@@ -1,12 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import Close from "@/assets/icons/close.svg?react";
+import Edit from "@/assets/icons/edit.svg?react";
 import DeleteForever from "@/assets/icons/delete_forever.svg?react";
 import {
   addVideoToPlaylist,
   createPlaylist,
   destroyPlaylist,
   removeVideoFromPlaylist,
+  updatePlaylist,
   usePlaylists,
 } from "@/hooks/youtube";
 import {
@@ -39,15 +41,33 @@ export function AddVideoToPlaylistModal({
   onClose,
 }: PlaylistsModalProps) {
   const playlists = usePlaylists("iTube");
+  const [playlistBeingRenamed, setPlaylistBeingRenamed] = React.useState<
+    string | null
+  >(null);
   const [newPlaylistName, setNewPlaylistName] = React.useState<string | null>(
     null,
+  );
+  const [playlistBeingUpdated, playlistBeingUpdatedReducer] = React.useReducer(
+    (
+      ids: string[],
+      { type, payload }: { type: "add" | "remove"; payload: string },
+    ) => {
+      switch (type) {
+        case "add":
+          return [...ids, payload];
+        case "remove":
+          return ids.filter((id) => id !== payload);
+      }
+    },
+    [],
   );
   const [playlistsBeingDestroyed, setPlaylistsBeingDestroyed] = React.useState<
     string[]
   >([]);
-  const { register, handleSubmit } = useForm();
+  const { register, unregister, handleSubmit } = useForm();
 
   function handleClose() {
+    setPlaylistBeingRenamed(null);
     setNewPlaylistName(null);
     onClose();
   }
@@ -68,21 +88,58 @@ export function AddVideoToPlaylistModal({
     handleClose();
   }
 
-  async function handleCreateNewPlaylist() {
-    if (newPlaylistName !== null && newPlaylistName !== "") {
-      await createPlaylist("iTube", newPlaylistName);
-      setNewPlaylistName(null);
-      playlists.mutate();
+  async function handleStartRenaming(playlistId: string, playlistName: string) {
+    const oldPlaylistId = playlistBeingRenamed;
+    const oldPlaylistNewName = newPlaylistName;
+
+    setPlaylistBeingRenamed(playlistId);
+    setNewPlaylistName(playlistName);
+
+    if (
+      oldPlaylistId !== null &&
+      oldPlaylistNewName !== null &&
+      oldPlaylistNewName !== ""
+    ) {
+      await handleUpdatePlaylist(oldPlaylistId, oldPlaylistNewName);
+    }
+  }
+
+  async function handleEndRenaming(playlistId: string, playlistName: string) {
+    setPlaylistBeingRenamed(null);
+    setNewPlaylistName(null);
+    await handleUpdatePlaylist(playlistId, playlistName);
+  }
+
+  async function handleUpdatePlaylist(playlistId: string, newName: string) {
+    if (playlists.data !== undefined && newName !== "") {
+      if (playlistId === "new") {
+        await createPlaylist("iTube", newName);
+        playlists.mutate();
+      } else {
+        playlistBeingUpdatedReducer({ type: "add", payload: playlistId });
+        await updatePlaylist(playlistId, {
+          ...playlists.data[playlistId],
+          name: newName,
+          videos: Object.values(playlists.data[playlistId].videos),
+        });
+        playlists.mutate();
+        playlistBeingUpdatedReducer({ type: "remove", payload: playlistId });
+      }
     }
   }
 
   async function handleDelete(playlistId: string) {
     setPlaylistsBeingDestroyed([...playlistsBeingDestroyed, playlistId]);
+    if (playlistBeingRenamed === playlistId) {
+      setPlaylistBeingRenamed(null);
+      setNewPlaylistName(null);
+    }
     await destroyPlaylist(playlistId);
-    playlists.mutate();
+    await playlists.mutate();
     setPlaylistsBeingDestroyed(
       playlistsBeingDestroyed.filter((id) => id !== playlistId),
     );
+    unregister([playlistId]);
   }
 
   return (
@@ -119,16 +176,46 @@ export function AddVideoToPlaylistModal({
             playlists.data !== undefined && (
               <>
                 <Grid
-                  $gridTemplateColumns="1fr auto auto"
+                  $gridTemplateColumns="auto 1fr auto auto"
                   $gridGap="10px"
                   $padding="0 20px 0 10px"
                   $overflow="hidden scroll"
                 >
                   {Object.values(playlists.data).map((playlist) => (
                     <React.Fragment key={playlist.id}>
-                      <label htmlFor={playlist.id}>
-                        <Typography as="p">{playlist.name}</Typography>
-                      </label>
+                      {playlistBeingUpdated.includes(playlist.id) ? (
+                        <CircularProgress size="small" />
+                      ) : playlistBeingRenamed === playlist.id ? (
+                        <div />
+                      ) : (
+                        <IconButton
+                          type="button"
+                          onClick={handleStartRenaming.bind(
+                            null,
+                            playlist.id,
+                            playlist.name,
+                          )}
+                        >
+                          <Edit fill="currentColor" />
+                        </IconButton>
+                      )}
+                      {playlistBeingRenamed === playlist.id &&
+                      newPlaylistName !== null ? (
+                        <Input
+                          type="text"
+                          autoFocus
+                          value={newPlaylistName}
+                          onChange={(e) => setNewPlaylistName(e.target.value)}
+                          onKeyDown={(e) =>
+                            e.key === "Enter" &&
+                            handleEndRenaming(playlist.id, newPlaylistName)
+                          }
+                        />
+                      ) : (
+                        <label htmlFor={playlist.id}>
+                          <Typography as="p">{playlist.name}</Typography>
+                        </label>
+                      )}
                       <input
                         id={playlist.id}
                         type="checkbox"
@@ -147,46 +234,60 @@ export function AddVideoToPlaylistModal({
                       )}
                     </React.Fragment>
                   ))}
-                  {newPlaylistName !== null && (
-                    <Input
-                      type="text"
-                      autoFocus
-                      onChange={(e) => setNewPlaylistName(e.target.value)}
-                      onKeyDown={(e) =>
-                        e.key === "Enter" && handleCreateNewPlaylist()
-                      }
-                    />
-                  )}
+                  {playlistBeingRenamed === "new" &&
+                    newPlaylistName !== null && (
+                      <Box $gridColumn="2">
+                        <Input
+                          type="text"
+                          autoFocus
+                          value={newPlaylistName}
+                          onChange={(e) => setNewPlaylistName(e.target.value)}
+                          onKeyDown={(e) =>
+                            e.key === "Enter" &&
+                            handleEndRenaming("new", newPlaylistName)
+                          }
+                        />
+                      </Box>
+                    )}
                 </Grid>
-                <Box $margin="15px 0">
-                  {newPlaylistName === null ? (
+                <FlexBox $margin="15px 0" $direction="column" $gap="10px">
+                  {playlistBeingRenamed !== "new" && (
                     <Button
                       type="button"
                       $variant="contained"
-                      onClick={setNewPlaylistName.bind(null, "")}
+                      onClick={handleStartRenaming.bind(null, "new", "")}
                     >
                       Add new playlist
                     </Button>
-                  ) : (
-                    <FlexBox $direction="row" $gap="10px">
-                      <Button
-                        type="button"
-                        $variant="outlined"
-                        onClick={setNewPlaylistName.bind(null, null)}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        type="button"
-                        $variant="contained"
-                        disabled={newPlaylistName === ""}
-                        onClick={handleCreateNewPlaylist}
-                      >
-                        Save
-                      </Button>
-                    </FlexBox>
                   )}
-                </Box>
+                  {playlistBeingRenamed !== null &&
+                    newPlaylistName !== null && (
+                      <FlexBox $direction="row" $gap="10px">
+                        <Button
+                          type="button"
+                          $variant="outlined"
+                          onClick={() => {
+                            setPlaylistBeingRenamed(null);
+                            setNewPlaylistName(null);
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          type="button"
+                          $variant="contained"
+                          disabled={newPlaylistName === ""}
+                          onClick={handleEndRenaming.bind(
+                            null,
+                            playlistBeingRenamed,
+                            newPlaylistName,
+                          )}
+                        >
+                          Save
+                        </Button>
+                      </FlexBox>
+                    )}
+                </FlexBox>
               </>
             )
           )}
@@ -198,7 +299,7 @@ export function AddVideoToPlaylistModal({
           <Button
             type="submit"
             $variant="contained"
-            disabled={newPlaylistName !== null}
+            disabled={playlistBeingRenamed !== null}
           >
             Accept
           </Button>

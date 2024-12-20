@@ -16,6 +16,8 @@ export interface BoxProps {
   $flexGrow?: boolean;
   $overflow?: string;
   $scrollbarWidth?: "auto" | "thin" | "none";
+  $gridColumn?: string;
+  $gridRow?: string;
   $transform?: string;
   $fontSize?: string;
   $border?: string;
@@ -40,6 +42,8 @@ export const Box = styled(motion.div)<BoxProps>`
   ${({ $overflow }) => $overflow && `overflow: ${$overflow}`};
   ${({ $scrollbarWidth }) =>
     $scrollbarWidth && `scrollbar-width: ${$scrollbarWidth}`};
+  ${({ $gridColumn }) => $gridColumn && `grid-column: ${$gridColumn}`};
+  ${({ $gridRow }) => $gridRow && `grid-row: ${$gridRow}`};
   ${({ $transform }) => $transform && `transform: ${$transform}`};
   ${({ $fontSize }) => $fontSize && `font-size: ${$fontSize}`};
   ${({ $background }) => $background && `background: ${$background}`};
